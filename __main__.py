@@ -12,4 +12,9 @@ dados = spark.read.csv("content/imdb-reviews-pt-br.csv",
                        header=True,
                        inferSchema=True)
 
-dados.show(truncate=False)
+# Informações
+print(f'Quantidade de linhas: {dados.count()} | Quantidade de colunas: {len(dados.columns)}')
+
+dados.printSchema()
+
+dados.limit(10).show()
