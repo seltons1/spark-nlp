@@ -18,3 +18,16 @@ print(f'Quantidade de linhas: {dados.count()} | Quantidade de colunas: {len(dado
 dados.printSchema()
 
 dados.limit(10).show()
+
+#%%
+
+print("Negativo")
+dados.filter(dados.id == 190).select("text_pt").show(truncate=False)
+
+print("Positivo")
+dados.filter(dados.id == 12427).select("text_pt").show(truncate=False)
+
+#%%
+
+# Contabilizano os tipos de dados
+dados.groupBy('sentiment').count().show()
