@@ -146,3 +146,39 @@ df = remover.transform(tokenizado3)
 
 #%% 
 df.show(truncate=False)
+
+# %%
+# Contagem dos tokens antes e depois do stopwords
+
+df.select("tokens","text_final")\
+    .withColumn("Freq_tokens", countTokens(f.col("tokens")))\
+        .withColumn("Freq_tokens_limpos", countTokens(f.col("text_final"))).show()
+
+
+#%%
+#Bag of Words
+#Análise textual
+#Vetorização das palavras
+
+from pyspark.ml.feature import CountVectorizer
+
+cv = CountVectorizer(inputCol="text_final", outputCol="CountVec")
+model = cv.fit(df)
+df_bow = model.transform(df)
+
+#%%
+
+df_bow.select('text_final', 'CountVec').show()
+model.vocabulary
+
+#%%
+from pyspark.ml.feature import HashingTF
+
+hashingTF = HashingTF(inputCol="text_final", outputCol="hashingTF")
+
+hashingTF.setNumFeatures(50)
+
+HTFfeaturizedData = hashingTF.transform(df_bow)
+
+#%%
+HTFfeaturizedData.select('text_final', 'hashingTF').show()
